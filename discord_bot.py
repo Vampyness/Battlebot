@@ -77,7 +77,7 @@ async def on_message(message):
 import discord
 from rally_full_simulation import simulate_rally_battle
 
-TOKEN = 'YOUR_BOT_TOKEN_HERE'
+TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
 
 intents = discord.Intents.default()
 bot = discord.Client(intents=intents)
