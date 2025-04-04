@@ -38,3 +38,48 @@ def simulate_beast_trigger(beast_skill, turns):
         return 0.0
     triggers = turns // data['cooldown']
     return round(triggers * data['bonus'], 3)
+# turn_engine.py
+
+from random import random
+
+def simulate_turns(attacker, defender, atk_boosts, def_boosts, beast_skills, turns=3):
+    result_log = []
+    wounded = {'attacker': 0, 'defender': 0}
+
+    for t in range(turns):
+        turn_log = f"**Turn {t+1}**\n"
+
+        atk_total = 0
+        def_total = 0
+
+        for troop in attacker:
+            atk_mod = sum(atk_boosts.get(troop['type'], [])) + sum(beast_skills.get(troop['type'], {}).get('atk', []))
+            base = troop['ATK']
+            # Smash: 10% chance to triple
+            if troop['tier'] == 'T9' and troop['type'] == 'Barbarian' and random() < 0.1:
+                base *= 3
+                turn_log += "- Smash triggered! (3x ATK)\n"
+            atk_total += base * (1 + atk_mod / 100) * troop['count']
+
+        for troop in defender:
+            def_mod = sum(def_boosts.get(troop['type'], [])) + sum(beast_skills.get(troop['type'], {}).get('def', []))
+            base = troop['DEF']
+            def_total += base * (1 + def_mod / 100) * troop['count']
+
+        wounded_ratio = atk_total / (def_total + 1)
+        wounded_def = int(wounded_ratio * 0.15)
+        wounded['defender'] += wounded_def
+
+        wounded_ratio_def = def_total / (atk_total + 1)
+        wounded_att = int(wounded_ratio_def * 0.15)
+        wounded['attacker'] += wounded_att
+
+        turn_log += f"- Damage Done (ATK): {atk_total:.0f}\n"
+        turn_log += f"- Damage Taken (DEF): {def_total:.0f}\n"
+        turn_log += f"- Estimated Defender Wounded: {wounded_def}\n"
+        turn_log += f"- Estimated Attacker Wounded: {wounded_att}\n"
+
+        result_log.append(turn_log)
+
+    return result_log, wounded
+
