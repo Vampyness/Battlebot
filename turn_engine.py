@@ -1,6 +1,5 @@
 # turn_engine.py
 
-# turn_engine.py
 
 from random import random
 
