@@ -1,4 +1,5 @@
-
+# utils.py
+# Shared helper functions
 # utils.py
 
 def apply_skill_modifiers(troops, skills):
