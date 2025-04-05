@@ -1,6 +1,5 @@
 # coach.py
 
-
 def suggest_formation(attacker, defender):
     advice = []
     for t in defender:
@@ -12,6 +11,12 @@ def suggest_formation(attacker, defender):
             advice.append("Mix in Barbarians to counter heavy Riders.")
     if not advice:
         advice.append("Formation appears balanced. Fine-tune with layering.")
+    return advice
+
+
+# coach.py
+
+on appears balanced. Fine-tune with layering.")
     return advice
 
 def suggest_formation(attacker, defender):
