@@ -123,6 +123,145 @@ bot.run(TOKEN)
 # discord_bot.py
 import discord
 from rally_full_simulation import simulate_rally_battle
+from turn_engine import simulate_turns
+from troop_data import TROOP_STATS
+
+TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
+intents = discord.Intents.default()
+intents.messages = True
+bot = discord.Client(intents=intents)
+
+def parse_input_block(block):
+    troops = []
+    parts = block.split(',')
+    for part in parts:
+        if ':' not in part:
+            continue
+        key, count = part.split(':')
+        key = key.lower()
+        if key in TROOP_STATS:
+            base = TROOP_STATS[key]
+            troop = base.copy()
+            troop['count'] = int(count)
+            troops.append(troop)
+    return troops
+
+@bot.event
+async def on_ready():
+    print(f'Bot connected as {bot.user}')
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if message.content.startswith('!rallysimulate'):
+        try:
+            content = message.content.replace('!rallysimulate', '').strip()
+            args = dict(pair.split('=') for pair in content.split() if '=' in pair)
+            atk = parse_input_block(args.get('atk', ''))
+            defend = parse_input_block(args.get('def', ''))
+
+            atk_boosts = {t['type']: [140, 65, 10] for t in atk}
+            def_boosts = {t['type']: [130, 65, 10] for t in defend}
+            beast_skills = {
+                'Rider': {'atk': [25]},
+                'Behemoth': {'def': [25]},
+                'Barbarian': {'atk': [25]},
+                'Hunter': {'atk': [25]}
+            }
+
+            result = simulate_rally_battle(atk, defend, atk_boosts, def_boosts, beast_skills)
+            turn_logs, wounded = simulate_turns(atk, defend, atk_boosts, def_boosts, beast_skills, turns=3)
+
+            report = f"**Rally Sim Result**\n\n"
+            report += f"**Adjusted ATK**: {result['adjusted_attack']:.0f}\n"
+            report += f"**Adjusted DEF**: {result['adjusted_defense']:.0f}\n"
+            report += f"**Outcome**: **{result['outcome']}**\n"
+            report += f"**Total Wounded (Attacker)**: {wounded['attacker']}\n"
+            report += f"**Total Wounded (Defender)**: {wounded['defender']}\n\n"
+
+            report += "\n".join(turn_logs)
+
+            await message.author.send(report)
+            await message.channel.send(f"Simulation sent to your DM, {message.author.mention}.")
+
+        except Exception as e:
+            await message.channel.send(f"Error: {str(e)}")
+
+bot.run(TOKEN)
+
+
+import discord
+from rally_full_simulation import simulate_rally_battle
+
+TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
+intents = discord.Intents.default()
+intents.messages = True
+bot = discord.Client(intents=intents)
+
+# Troop stat reference (simplified)
+TROOP_STATS = {
+    'rider9': {'type': 'Rider', 'tier': 'T9', 'ATK': 91, 'DEF': 49},
+    'barb10': {'type': 'Barbarian', 'tier': 'T10', 'ATK': 49, 'DEF': 114},
+    'behe10': {'type': 'Behemoth', 'tier': 'T10', 'ATK': 164, 'DEF': 73},
+    'hunt9': {'type': 'Hunter', 'tier': 'T9', 'ATK': 98, 'DEF': 49}
+}
+
+def parse_input_block(block):
+    troops = []
+    parts = block.split(',')
+    for part in parts:
+        if ':' not in part:
+            continue
+        key, count = part.split(':')
+        key = key.lower()
+        if key in TROOP_STATS:
+            base = TROOP_STATS[key]
+            troop = base.copy()
+            troop['count'] = int(count)
+            troops.append(troop)
+    return troops
+
+@bot.event
+async def on_ready():
+    print(f'Bot connected as {bot.user}')
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if message.content.startswith('!rallysimulate'):
+        try:
+            content = message.content.replace('!rallysimulate', '').strip()
+            args = dict(pair.split('=') for pair in content.split() if '=' in pair)
+            atk = parse_input_block(args.get('atk', ''))
+            defend = parse_input_block(args.get('def', ''))
+
+            atk_boosts = {t['type']: [140, 65, 10] for t in atk}
+            def_boosts = {t['type']: [130, 65, 10] for t in defend}
+            beast_skills = {
+                'Rider': {'atk': [25]},
+                'Behemoth': {'def': [25]}
+            }
+
+            result = simulate_rally_battle(atk, defend, atk_boosts, def_boosts, beast_skills)
+            response = f"**Rally Sim Result**\n\n**Adjusted ATK**: {result['adjusted_attack']:.0f}\n**Adjusted DEF**: {result['adjusted_defense']:.0f}\n**Outcome**: **{result['outcome']}**"
+
+            # DM Whisper
+            await message.author.send(response)
+            await message.channel.send(f"Simulation sent to your DM, {message.author.mention}.")
+
+        except Exception as e:
+            await message.channel.send(f"Error: {str(e)}")
+
+bot.run(TOKEN)
+
+
+# discord_bot.py
+import discord
+from rally_full_simulation import simulate_rally_battle
 
 TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
 intents = discord.Intents.default()
