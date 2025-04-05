@@ -1,5 +1,17 @@
 # troop_data.py
 
+
+
+TROOP_STATS = {
+    # Barbarian Troops
+    'guard10': {'type': 'Barbarian', 'tier': 'T10', 'ATK': 49, 'DEF': 114},
+    'guard7': {'type': 'Barbarian', 'tier': 'T7', 'ATK': 29, 'DEF': 68},
+    'warrior9': {'type': 'Barbarian', 'tier': 'T9', 'ATK': 84, 'DEF': 49},
+    'warrior8': {'type': 'Barbarian', 'tier': 'T8', 'ATK': 70, 'DEF': 41},
+
+    # Rider Troops
+    'rider9': {'type': 'Rider', 'tier': 'T9', 'ATK': 91, 'DEF': 49},
+
 TROOP_STATS = {
     # Barbarian Troops
     'guard10': {'type': 'Barbarian', 'tier': 'T10', 'ATK': 49, 'DEF': 114},
