@@ -1,5 +1,105 @@
 # turn_engine.py
 
+# turn_engine.py
+
+from random import random
+
+def simulate_turns(attacker, defender, atk_boosts, def_boosts, beast_skills, turns=3):
+    result_log = []
+    wounded = {'attacker': 0, 'defender': 0}
+
+    for t in range(turns):
+        turn_log = f"**Turn {t+1}**\n"
+
+        atk_total = 0
+        def_total = 0
+
+        for troop in attacker:
+            atk_mod = sum(atk_boosts.get(troop['type'], [])) + sum(beast_skills.get(troop['type'], {}).get('atk', []))
+            base = troop['ATK']
+            # Smash: 10% chance to triple
+            if troop['tier'] == 'T9' and troop['type'] == 'Barbarian' and random() < 0.1:
+                base *= 3
+                turn_log += "- Smash triggered! (3x ATK)\n"
+            atk_total += base * (1 + atk_mod / 100) * troop['count']
+
+        for troop in defender:
+            def_mod = sum(def_boosts.get(troop['type'], [])) + sum(beast_skills.get(troop['type'], {}).get('def', []))
+            base = troop['DEF']
+            def_total += base * (1 + def_mod / 100) * troop['count']
+
+        wounded_ratio = atk_total / (def_total + 1)
+        wounded_def = int(wounded_ratio * 0.15)
+        wounded['defender'] += wounded_def
+
+        wounded_ratio_def = def_total / (atk_total + 1)
+        wounded_att = int(wounded_ratio_def * 0.15)
+        wounded['attacker'] += wounded_att
+
+        turn_log += f"- Damage Done (ATK): {atk_total:.0f}\n"
+        turn_log += f"- Damage Taken (DEF): {def_total:.0f}\n"
+        turn_log += f"- Estimated Defender Wounded: {wounded_def}\n"
+        turn_log += f"- Estimated Attacker Wounded: {wounded_att}\n"
+
+        result_log.append(turn_log)
+
+    return result_log, wounded
+
+
+ turn_engine.py
+from random import random
+
+def simulate_turns(attacker, defender, atk_boosts, def_boosts, beast_skills, turns=3):
+    result_log = []
+    wounded = {'attacker': 0, 'defender': 0}
+    beast_cooldowns = {'Savage Onslaught': 0, 'Clawed Retribution': 0}
+
+    for t in range(turns):
+        turn_log = f"**Turn {t+1}**\n"
+
+        atk_total = 0
+        def_total = 0
+
+        for troop in attacker:
+            atk_mod = sum(atk_boosts.get(troop['type'], [])) + sum(beast_skills.get(troop['type'], {}).get('atk', []))
+            base = troop['ATK']
+            if troop['tier'] == 'T9' and troop['type'] == 'Barbarian' and random() < 0.1:
+                base *= 3
+                turn_log += "- Smash triggered (3x ATK)!\n"
+            atk_total += base * (1 + atk_mod / 100) * troop['count']
+
+        for troop in defender:
+            def_mod = sum(def_boosts.get(troop['type'], [])) + sum(beast_skills.get(troop['type'], {}).get('def', []))
+            base = troop['DEF']
+            def_total += base * (1 + def_mod / 100) * troop['count']
+
+        # Guardian Shielding (soak up damage first)
+        guardian_row = [t for t in defender if t['tier'] in ['T10', 'T7'] and t['type'] == 'Barbarian']
+        shield = sum(t['DEF'] * t['count'] for t in guardian_row) * 1.25
+        overflow_damage = max(atk_total - shield, 0)
+        turn_log += f"- Guardian Soak: {shield:.0f} DEF absorbed\n"
+
+        wounded_def = int((overflow_damage / (def_total + 1)) * 0.15)
+        wounded['defender'] += wounded_def
+
+        wounded_att = int(((def_total / (atk_total + 1)) * 0.15))
+        wounded['attacker'] += wounded_att
+
+        # Beast skill example cooldown (Savage Onslaught = 3T)
+        if beast_cooldowns['Savage Onslaught'] == 0:
+            turn_log += "- Kong’s Savage Onslaught triggered!\n"
+            beast_cooldowns['Savage Onslaught'] = 3
+        else:
+            beast_cooldowns['Savage Onslaught'] -= 1
+
+        turn_log += f"- Damage Dealt: {atk_total:.0f} | DEF: {def_total:.0f}\n"
+        turn_log += f"- Wounded Defender: {wounded_def}\n"
+        turn_log += f"- Wounded Attacker: {wounded_att}\n"
+        result_log.append(turn_log)
+
+    return result_log, wounded
+
+
 from random import random
 
 def simulate_turns(attacker, defender, atk_boosts, def_boosts, beast_skills, turns=3):
