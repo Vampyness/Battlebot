@@ -7,7 +7,7 @@
 import discord
 from rally_full_simulation import simulate_rally_battle
 
-TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
+TOKEN = 'MTM1NjAzMDg4MzM5MTQ3MTc4OQ.G5EEZb.6ucbeMhvw3rpumgtFbsao-3dOCv-84B9GgB3yw'
 intents = discord.Intents.default()
 intents.messages = True
 bot = discord.Client(intents=intents)
@@ -158,7 +158,7 @@ Allows players to run rally battle simulations using Discord commands.
 
 ## Setup Instructions
 
-1. Paste your real bot token into `TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'`
+1. Paste your real bot token into `TOKEN = 'MTM1NjAzMDg4MzM5MTQ3MTc4OQ.G5EEZb.6ucbeMhvw3rpumgtFbsao-3dOCv-84B9GgB3yw'`
 2. Install dependencies:
 ```bash
 pip install discord.py
@@ -216,7 +216,7 @@ async def on_message(message):
 import discord
 from rally_full_simulation import simulate_rally_battle
 
-TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
+TOKEN = 'MTM1NjAzMDg4MzM5MTQ3MTc4OQ.G5EEZb.6ucbeMhvw3rpumgtFbsao-3dOCv-84B9GgB3yw'
 
 intents = discord.Intents.default()
 bot = discord.Client(intents=intents)
@@ -265,7 +265,7 @@ from rally_full_simulation import simulate_rally_battle
 from turn_engine import simulate_turns
 from troop_data import TROOP_STATS
 
-TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
+TOKEN = 'MTM1NjAzMDg4MzM5MTQ3MTc4OQ.G5EEZb.6ucbeMhvw3rpumgtFbsao-3dOCv-84B9GgB3yw'
 intents = discord.Intents.default()
 intents.messages = True
 bot = discord.Client(intents=intents)
@@ -334,7 +334,7 @@ bot.run(TOKEN)
 import discord
 from rally_full_simulation import simulate_rally_battle
 
-TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
+TOKEN = 'MTM1NjAzMDg4MzM5MTQ3MTc4OQ.G5EEZb.6ucbeMhvw3rpumgtFbsao-3dOCv-84B9GgB3yw'
 intents = discord.Intents.default()
 intents.messages = True
 bot = discord.Client(intents=intents)
@@ -402,7 +402,7 @@ bot.run(TOKEN)
 import discord
 from rally_full_simulation import simulate_rally_battle
 
-TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
+TOKEN = 'MTM1NjAzMDg4MzM5MTQ3MTc4OQ.G5EEZb.6ucbeMhvw3rpumgtFbsao-3dOCv-84B9GgB3yw'
 intents = discord.Intents.default()
 intents.messages = True
 bot = discord.Client(intents=intents)
@@ -471,7 +471,7 @@ from rally_full_simulation import simulate_rally_battle
 from turn_engine import simulate_turns
 from troop_data import TROOP_STATS
 
-TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
+TOKEN = 'MTM1NjAzMDg4MzM5MTQ3MTc4OQ.G5EEZb.6ucbeMhvw3rpumgtFbsao-3dOCv-84B9GgB3yw'
 intents = discord.Intents.default()
 intents.messages = True
 bot = discord.Client(intents=intents)
