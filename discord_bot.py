@@ -77,7 +77,7 @@ from rally_full_simulation import simulate_rally_battle
 from turn_engine import simulate_turns
 from troop_data import TROOP_STATS
 
-TOKEN = '8ujVzDVORwPnoFqia9p7Dwub_FmUEZgF'
+TOKEN = 'MTM1NjAzMDg4MzM5MTQ3MTc4OQ.G5EEZb.6ucbeMhvw3rpumgtFbsao-3dOCv-84B9GgB3yw'
 intents = discord.Intents.default()
 intents.messages = True
 bot = discord.Client(intents=intents)
